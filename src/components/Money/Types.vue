@@ -11,28 +11,22 @@
   </div>
 </template>
 
-<script lang='js'>
-export default {
-  name: 'Types',
-  props:['xxx'],
-  mounted() {
-    console.log(this.xxx)
-  },
-  data() {
-    return {
-      type: '-'//减号表示输出，加号表示输入
-    }
-  },
-  methods: {
-    selectType(type) {//type只能时减号或者加号中的一个
-      if (type !== '-' && type !== '+') {
-        throw  new Error('type is unknown')
-      }
-      this.type = type
-    }
-  }
+<script lang='ts'>
+import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
 
-};
+@Component
+export default class Types extends Vue {
+  type = '-';//减号表示输出，加号表示输入
+  @Prop(Number) xxx: number | undefined;
+
+  selectType(type: string) {
+    if (type !== '-' && type !== '+') {
+      throw new Error('type is unknown');
+    }
+    this.type = type;
+  }
+}
 </script>
 
 <style lang='scss' scoped>
