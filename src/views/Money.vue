@@ -3,7 +3,7 @@
     <NumberPad/>
     <Types/>
     <Notes/>
-    <Tags :data-source="tags"/>
+    <Tags :data-source.sync="tags"/>
   </Layout>
 </template>
 
@@ -17,10 +17,10 @@ import Types from '@/components/Money/Types.vue';
 export default {
   name: 'Money',
   components: {Tags, Notes, Types, NumberPad},
-  data(){
+  data() {
     return {
-      tags:['衣','食','住','行']
-    }
+      tags: ['衣', '食', '住', '行']
+    };
   }
 };
 </script>
