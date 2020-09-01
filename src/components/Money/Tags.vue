@@ -19,7 +19,8 @@ import Vue from 'vue';
 @Component
 export default class Tags extends Vue {
   @Prop() readonly dataSource: string[] | undefined;
-  selectedTags: string[] = [];
+  @Prop() readonly value: string[];
+  selectedTags = this.value;
 
   toggle(tag: string) {
     const index = this.selectedTags.indexOf(tag);
@@ -32,6 +33,7 @@ export default class Tags extends Vue {
         this.selectedTags.splice(index, 1);
       }
     }
+    this.$emit('update:selected', this.selectedTags);
   }
 
   create() {

@@ -1,22 +1,29 @@
 <template>
   <div>
     <label class="notes">
-      {{value}}
       <span class="name">备注</span>
       <input type="text"
-             v-model="value"
+             :value="currentValue"
+             @input="onInput"
              placeholder="在这里输入备注">
     </label>
   </div>
 </template>
 
 <script lang='ts'>
-import {Component} from 'vue-property-decorator';
 import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Notes extends Vue {
-  value = '';
+  @Prop() readonly value!: string;
+  currentValue = this.value;
+
+  onInput(event: KeyboardEvent) {
+    this.currentValue = event.target.value;
+    this.$emit('update:value', this.currentValue);
+  }
+
 }
 </script>
 
