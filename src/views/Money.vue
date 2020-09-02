@@ -15,6 +15,18 @@ import Tags from '@/components/Money/Tags.vue';
 import Notes from '@/components/Money/Notes.vue';
 import Types from '@/components/Money/Types.vue';
 
+const version = window.localStorage.getItem('version' || '0');
+const recordList: Record[] = JSON.parse(window.localStorage.getItem('recordList' || []));
+if (version === '0.0.1') {
+  //数据升级，数据迁移
+  recordList.forEach(record => {
+    record.createdAt = new Date(0);
+  });
+  //保存数据
+  window.localStorage.setItem('recordList', JSON.stringify(recordList));
+}
+//保存后就能升级版本了，0.0.2版本新增了创建时间
+window.localStorage.setItem('version', '0.0.1');
 
 //声明类型
 type Record = {
@@ -22,6 +34,7 @@ type Record = {
   notes: string;
   type: string;
   amount: number;
+  createdAt?: Date;
 }
 
 @Component({
@@ -34,7 +47,8 @@ export default class Money extends Vue {
 
 
   saveRecord() {
-    const deepCloneRecord = JSON.parse(JSON.stringify(this.record));
+    const deepCloneRecord: Record = JSON.parse(JSON.stringify(this.record));
+    deepCloneRecord.createdAt = new Date();
     this.recordList.push(deepCloneRecord);
   }
 
