@@ -20,7 +20,8 @@ export default class Notes extends Vue {
   currentValue = this.value;
 
   onInput(event: KeyboardEvent) {
-    this.currentValue = event.target.value;
+    const input = event.target as HTMLInputElement;
+    this.currentValue = input.value;
     this.$emit('update:value', this.currentValue);
   }
 
