@@ -14,9 +14,11 @@ import NumberPad from '@/components/Money/NumberPad.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Notes from '@/components/Money/Notes.vue';
 import Types from '@/components/Money/Types.vue';
-import model from '@/model';
+import recordListModel from '@/models/recordListModel';
+import tagListModel from '@/models/tagListModel';
 
-const recordList = model.fetch();
+const recordList = recordListModel.fetch();
+const tagList = tagListModel.fetch();
 const version = window.localStorage.getItem('version' || '0');
 if (version === '0.0.1') {
   //数据升级，数据迁移
@@ -24,7 +26,7 @@ if (version === '0.0.1') {
     record.createdAt = new Date(0);
   });
   //保存数据
-  model.save(recordList);
+  recordListModel.save(recordList);
 }
 //保存后就能升级版本了，0.0.2版本新增了创建时间
 window.localStorage.setItem('version', '0.0.2');
@@ -33,20 +35,20 @@ window.localStorage.setItem('version', '0.0.2');
   components: {Tags, Notes, Types, NumberPad},
 })
 export default class Money extends Vue {
-  tags: string[] = ['衣', '食', '住', '行'];
+  tags: string[] = tagList;
   recordList = recordList;
   record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
 
 
   saveRecord() {
-    const deepCloneRecord: RecordItem = model.deepClone(this.record);
+    const deepCloneRecord: RecordItem = recordListModel.deepClone(this.record);
     deepCloneRecord.createdAt = new Date();
     this.recordList.push(deepCloneRecord);
   }
 
   @Watch('recordList')
   onRecordListChanged() {
-    model.save(this.recordList);
+    recordListModel.save(this.recordList);
   }
 }
 </script>
