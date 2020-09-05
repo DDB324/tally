@@ -1,11 +1,11 @@
 <template>
   <div>
     <label class="notes">
-      <span class="name">备注</span>
+      <span class="name">{{ this.fieldName }}</span>
       <input type="text"
              :value="currentValue"
              @input="onInput"
-             placeholder="在这里输入备注">
+             :placeholder="this.placeHolder">
     </label>
   </div>
 </template>
@@ -16,6 +16,8 @@ import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Notes extends Vue {
+  @Prop({required: true}) readonly fieldName!: string;
+  @Prop() readonly placeHolder?: string;
   @Prop() readonly value!: string;
   currentValue = this.value;
 

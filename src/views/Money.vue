@@ -2,7 +2,9 @@
   <Layout class-prefix="xxx">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
     <Types :value.sync="record.type"/>
-    <Notes :value.sync="record.notes"/>
+    <Notes :value.sync="record.notes"
+           field-name="备注"
+           place-holder="在这里输入备注"/>
     <Tags :data-source.sync="tags" :value.sync="record.tags"/>
   </Layout>
 </template>
@@ -50,6 +52,7 @@ export default class Money extends Vue {
   @Watch('recordList')
   onRecordListChanged() {
     recordListModel.save(this.recordList);
+    console.log(this.recordList);
   }
 }
 </script>
