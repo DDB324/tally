@@ -1,8 +1,8 @@
 <template>
   <Layout>
     <ol class="tags">
-      <li v-for="tag in tags" :key="tag">
-        <span>{{ tag }}</span>
+      <li v-for="tag in tags" :key="tag.id">
+        <span>{{ tag.name }}</span>
         <Icon name="right"/>
       </li>
     </ol>
@@ -24,7 +24,7 @@ export default class Labels extends Vue {
   tags = tagListModel.data;
 
   createTag() {
-    const name = window.prompt('请输入新增标签的名字') as string;
+    const name = window.prompt('请输入新增标签的名字');
     const message = tagListModel.create(name);
     if (message === 'duplicated') {
       window.alert('标签名重复');
