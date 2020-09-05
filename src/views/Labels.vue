@@ -24,12 +24,12 @@ export default class Labels extends Vue {
   tags = tagListModel.data;
 
   createTag() {
-    const name: string = window.prompt('请输入新增标签的名字');
-    const message = tagListModel.create(name)
+    const name = window.prompt('请输入新增标签的名字') as string;
+    const message = tagListModel.create(name);
     if (message === 'duplicated') {
       window.alert('标签名重复');
-    } else if(message === 'success'){
-      window.alert('创建成功');
+    } else if (message === 'null') {
+      window.alert('标签名不能为空');
     }
   }
 }
