@@ -17,16 +17,15 @@ const tagListModel: TagListModel = {
   },
   save() {//写数据
     window.localStorage.setItem(localStorageKeyName, JSON.stringify(this.data));
-    console.log('save函数触发了');
   },
   create(name) {
-    const names = this.data.map(item=>item.name)
+    const names = this.data.map(item => item.name);
     if (name && names.indexOf(name) >= 0) {
       return 'duplicated';
     } else if (name === '' || name === null) {
       return 'null';
     } else {
-      this.data.push({id:name, name:name});
+      this.data.push({id: name, name: name});
       this.save();
       return 'success';
     }
