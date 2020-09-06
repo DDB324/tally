@@ -1,6 +1,6 @@
 <template>
   <Layout class-prefix="layout">
-    {{record}}
+    {{ record }}
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
     <Types :value.sync="record.type"/>
     <div class="notes-wrapper">
@@ -41,7 +41,7 @@ window.localStorage.setItem('version', '0.0.2');
   components: {Tags, FormItem, Types, NumberPad},
 })
 export default class Money extends Vue {
-  tags: string[] = tagList;
+  tags = tagList;
   recordList = recordList;
   record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
 
