@@ -9,7 +9,7 @@
       </router-link>
     </div>
     <div class="createTag-wrapper">
-      <Button @click="createTag">新建标签</Button>
+      <Button class="createTag" @click="createTag">新建标签</Button>
     </div>
   </Layout>
 </template>
@@ -65,6 +65,9 @@ export default class Labels extends Vue {
   padding: 16px;
   margin-top: 44-16px;
   text-align: center;
+  >.createTag{
+    background: green;
+  }
 }
 
 </style>
