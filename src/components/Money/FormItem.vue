@@ -3,8 +3,8 @@
     <label class="formItem">
       <span class="name">{{ this.fieldName }}</span>
       <input type="text"
-             :value="currentValue"
-             @input="onInput"
+             :value="value"
+             @input="onInputValue($event.target.value)"
              :placeholder="this.placeHolder">
     </label>
   </div>
@@ -18,13 +18,10 @@ import {Component, Prop} from 'vue-property-decorator';
 export default class FormItem extends Vue {
   @Prop({required: true}) readonly fieldName!: string;
   @Prop() readonly placeHolder?: string;
-  @Prop() readonly value!: string;
-  currentValue = this.value;
+  @Prop({default: ''}) readonly value!: string;
 
-  onInput(event: KeyboardEvent) {
-    const input = event.target as HTMLInputElement;
-    this.currentValue = input.value;
-    this.$emit('update:value', this.currentValue);
+  onInputValue(value: string) {
+    this.$emit('update:value', value);
   }
 
 }
