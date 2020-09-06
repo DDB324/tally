@@ -1,15 +1,17 @@
 <template>
   <Layout>
     <div class="navBar">
-      <Icon class="leftIcon" name="left"/>
+      <Icon class="leftIcon" @click="fallBack" name="left"/>
       <span class="title">编辑标签</span>
       <span class="rightSpan"></span>
     </div>
     <div class="form-wrapper">
-      <FormItem :value="tag.name" field-name="标签名" place-holder="请输入标签名"/>
+      <FormItem :value="tag.name"
+                @update:value="update"
+                field-name="标签名" place-holder="请输入标签名"/>
     </div>
     <div class="button-wrapper">
-      <Button>删除标签</Button>
+      <Button class="button" @click="remove">删除标签</Button>
     </div>
   </Layout>
 </template>
@@ -33,12 +35,31 @@ export default class EditLabel extends Vue {
     const tags = tagListModel.data;
     const tag = tags.filter(item => item.id === id)[0];
     if (tag) {
-      this.tag = tag
+      this.tag = tag;
     } else {
       // this.$router.push('/404');//回退回不去
       this.$router.replace('/404');
     }
+  }
 
+  update(name: string) {
+    if (this.tag) {
+      tagListModel.update(this.tag.id, name);
+    }
+  }
+
+  fallBack() {
+    console.log('后退');
+    this.$router.back();
+  }
+
+  remove() {
+    const message = window.confirm(`确定要删除此标签吗？`);
+    if (this.tag && message && tagListModel.remove(this.tag.id)) {
+      this.$router.replace('/labels');
+    } else {
+      window.alert('删除失败');
+    }
   }
 }
 </script>
@@ -73,5 +94,8 @@ export default class EditLabel extends Vue {
   text-align: center;
   padding: 16px;
   margin-top: 44-16px;
+  >.button{
+    background: red;
+  }
 }
 </style>
