@@ -1,6 +1,5 @@
 <template>
   <Layout class-prefix="layout">
-    {{ record }}
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
     <Types :value.sync="record.type"/>
     <div class="notes-wrapper">
@@ -24,7 +23,6 @@ import tagListModel from '@/models/tagListModel';
 
 const recordList = recordListModel.fetch();
 const tagList = tagListModel.fetch();
-// const tagListName = tagList.map(item => item.name);
 const version = window.localStorage.getItem('version' || '0');
 if (version === '0.0.1') {
   //数据升级，数据迁移
@@ -32,7 +30,7 @@ if (version === '0.0.1') {
     record.createdAt = new Date(0);
   });
   //保存数据
-  recordListModel.save(recordList);
+  recordListModel.save();
 }
 //保存后就能升级版本了，0.0.2版本新增了创建时间
 window.localStorage.setItem('version', '0.0.2');
@@ -47,14 +45,12 @@ export default class Money extends Vue {
 
 
   saveRecord() {
-    const deepCloneRecord: RecordItem = recordListModel.deepClone(this.record);
-    deepCloneRecord.createdAt = new Date();
-    this.recordList.push(deepCloneRecord);
+    recordListModel.create(this.record)
   }
 
   @Watch('recordList')
   onRecordListChanged() {
-    recordListModel.save(this.recordList);
+    recordListModel.save();
     console.log(this.recordList);
   }
 }

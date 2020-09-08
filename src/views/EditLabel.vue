@@ -49,7 +49,6 @@ export default class EditLabel extends Vue {
   }
 
   fallBack() {
-    console.log('后退');
     this.$router.back();
   }
 
