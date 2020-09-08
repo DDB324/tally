@@ -28,11 +28,8 @@ export default class Labels extends Vue {
 
   createTag() {
     const name = window.prompt('请输入新增标签的名字');
-    const message = tagListModel.create(name);
-    if (message === 'duplicated') {
-      window.alert('标签名重复');
-    } else if (message === 'null') {
-      window.alert('标签名不能为空');
+    if (name) {
+      window.createTag(name);
     }
   }
 }
@@ -64,7 +61,8 @@ export default class Labels extends Vue {
   padding: 16px;
   margin-top: 44-16px;
   text-align: center;
-  >.createTag{
+
+  > .createTag {
     background: green;
   }
 }
