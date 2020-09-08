@@ -26,18 +26,24 @@ const tagListModel: TagListModel = {
   },
   update(id, name) {
     const idList = this.data.map(item => item.id);
+    const tag = this.data.filter(item => item.id === id)[0];
     if (idList.indexOf(id) >= 0) {
       const nameList = this.data.map(item => item.name);
       if (nameList.indexOf(name) >= 0) {
-        return false;
-      } else {
-        const tag = this.data.filter(item => item.id === id)[0];
         tag.name = name;
         this.save();
-        return true;
+        return 'duplicated';
+      } else if (name === '') {
+        tag.name = name;
+        this.save();
+        return 'nothing';
+      } else {
+        tag.name = name;
+        this.save();
+        return 'success';
       }
     } else {
-      return false;
+      return 'not found';
     }
   },
   remove(id) {

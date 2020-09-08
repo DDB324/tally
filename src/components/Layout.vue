@@ -9,9 +9,9 @@
 
 <script lang='ts'>
 export default {
-  props:['classPrefix'],
-name: "Layout"
-}
+  props: ['classPrefix'],
+  name: 'Layout'
+};
 </script>
 
 <style lang='scss' scoped>
@@ -20,7 +20,8 @@ name: "Layout"
   flex-direction: column;
   height: 100vh;
 }
-.content{
+
+.content {
   overflow: auto;
   flex-grow: 1;
 }
