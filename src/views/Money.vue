@@ -7,7 +7,7 @@
                 field-name="备注"
                 place-holder="在这里输入备注"/>
     </div>
-    <Tags :data-source="tags" :value.sync="record.tags"/>
+    <Tags :value.sync="record.tags"/>
   </Layout>
 </template>
 
@@ -18,7 +18,7 @@ import NumberPad from '@/components/Money/NumberPad.vue';
 import Tags from '@/components/Money/Tags.vue';
 import FormItem from '@/components/Money/FormItem.vue';
 import Types from '@/components/Money/Types.vue';
-import store from '@/store/index2';
+import oldStore from '@/store/index2';
 
 // const recordList = recordListModel.fetch();
 // const version = window.localStorage.getItem('version' || '0');
@@ -35,16 +35,20 @@ import store from '@/store/index2';
 
 @Component({
   components: {Tags, FormItem, Types, NumberPad},
+  computed: {
+    recordList() {
+      return oldStore.recordList;
+    },
+  }
 })
 export default class Money extends Vue {
-  tags = store.tagList;
-  recordList = store.recordList;
   record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
 
   createRecord() {
-    store.createRecord(this.record);
+    oldStore.createRecord(this.record);
   }
 }
+
 </script>
 
 <style lang="scss">
