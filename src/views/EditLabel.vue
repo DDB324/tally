@@ -21,16 +21,19 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import FormItem from '@/components/Money/FormItem.vue';
 import Button from '@/components/Button.vue';
-import store from '@/store/index2';
 
 @Component({
-  components: {Button, FormItem}
+  components: {Button, FormItem},
 })
 export default class EditLabel extends Vue {
-  tag = store.findTag(this.$route.params.id);
-  message: 'success' | 'duplicated' | 'not found' | 'nothing' | undefined;
+  get tag() {
+    return this.$store.state.currentTag;
+  }
 
   created() {
+    this.$store.commit('fetchTags');
+    const id = this.$route.params.id;
+    this.$store.commit('setCurrentTag', id);
     if (!this.tag) {
       // this.$router.push('/404');//回退回不去
       this.$router.replace('/404');
@@ -39,22 +42,24 @@ export default class EditLabel extends Vue {
 
   update(name: string) {
     if (this.tag) {
-      this.message = store.updateTag(this.tag.id, name);
+      this.$store.commit('updateTag', {id: this.tag.id, name});
     }
   }
 
   fallBack() {
-    if (this.message === 'duplicated') {
+    const message = this.$store.state.updateTagReturnValue;
+    if (message === 'duplicated') {
       window.alert('输入的标签名已存在，请重新输入');
-    } else if (this.message === 'nothing') {
+    } else if (message === 'nothing') {
       window.alert('输入的标签名为空，请重新输入');
-    } else if (this.message === 'success' || this.message === undefined) {
+    } else if (message === 'success' || message === undefined) {
       this.$router.back();
     }
   }
 
   remove() {
-    if (this.tag && store.removeTag(this.tag.id)) {
+    this.$store.commit('removeTag', this.tag.id);
+    if (this.tag && this.$store.state.removeTagReturnValue) {
       window.alert('删除成功');
       this.$router.replace('/labels');
     } else {
