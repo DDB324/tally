@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-wrapper" :class="classPrefix && `${classPrefix}-wrapper`">
+  <div class="wrapper" :class="classPrefix && `${classPrefix}-wrapper`">
     <div class="content" :class="classPrefix &&`${classPrefix}-content`">
       <slot/>
     </div>
@@ -18,7 +18,7 @@ export default class Layout extends Vue{
 </script>
 
 <style lang='scss' scoped>
-.layout-wrapper {
+.wrapper {
   display: flex;
   flex-direction: column;
   height: 100vh;

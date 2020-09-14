@@ -4,11 +4,19 @@ type RecordItem = {
   notes: string;
   type: string;
   amount: number;
-  createdAt?: Date;
+  createdAt?: string;
 }
 type Tag = {
   id: string;
   name: string;
+}
+type RootState = {
+  recordList: RecordItem[];
+  tagList: Tag[];
+  currentTag?: Tag;
+  currentTagReturnValue?: 'duplicated' | 'null' | 'success';
+  removeTagReturnValue?: boolean;
+  updateTagReturnValue?: 'duplicated' | 'not found' | 'nothing' | 'success';
 }
 type TagListModel = {
   data: Tag[];
