@@ -14,11 +14,12 @@ const store = new Vuex.Store({
     removeTagReturnValue: undefined
   } as RootState,
   mutations: {
-    createRecord(state, record) {
-      const deepCloneRecord: RecordItem = deepClone(record);
+    createRecord(state, record: RecordItem) {
+      const deepCloneRecord = deepClone(record);
       deepCloneRecord.createdAt = new Date().toISOString();
       state.recordList?.push(deepCloneRecord);
       store.commit('saveRecords');
+      window.alert('已保存');
     },
     saveRecords(state) {
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
@@ -28,6 +29,12 @@ const store = new Vuex.Store({
     },
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
+      if (!state.tagList || state.tagList.length === 0) {
+        const defaultTag: string[] = ['衣', '食', '住', '行'];
+        for (let i = 0; i < defaultTag.length; i++) {
+          store.commit('createTag', defaultTag[i]);
+        }
+      }
     },
     createTag(state, name: string) {
       const names = state.tagList.map(item => item.name);
