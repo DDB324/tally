@@ -1,6 +1,7 @@
 <template>
   <Layout>
     <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="type"/>
+    <Chart :option="chartOption"/>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="title">{{ beautify(group.title) }} <span>￥{{ group.total }}</span></h3>
@@ -26,11 +27,73 @@ import Tabs from '@/components/Tabs.vue';
 import recordTypeList from '@/constents/recordTypeList';
 import dayjs from 'dayjs';
 import deepClone from '@/lib/deepClone';
+import Chart from '@/components/Chart.vue';
 
 @Component({
-  components: {Tabs}
+  components: {Chart, Tabs}
 })
 export default class Statistics extends Vue {
+  type = '-';
+  recordTypeList = recordTypeList;
+  get keyValueList(){
+    const array = [];
+    const today = dayjs();
+    for (let i = 0; i < 7; i++) {
+      const date = today.subtract(i, 'day').format('YYYY-MM-DD');
+      const foundDate = this.groupedList.filter(item => item.title === date)[0];
+      array.unshift({date: date, value: foundDate ? foundDate.total : 0});
+    }
+    return array
+  }
+
+
+  get chartOption() {
+    const showDate = this.keyValueList.map(item=>item.date.slice(5))
+    const showValue = this.keyValueList.map(item=>item.value)
+    return {
+      tooltip: {
+        confine: true,
+        show: true,
+        position: 'top',
+        triggerOn: 'mousemove|click',
+        formatter: '{c}',
+      },
+      grid: {
+        left: 0,
+        top: '20%',
+        right: 0,
+        bottom: '20%',
+      },
+      xAxis: {
+        type: 'category',
+        data: showDate,
+        axisTick: {show: false, alignWithLabel: true},
+      },
+      yAxis: {
+        show: false,
+        type: 'value'
+      },
+      series: [{
+        symbolSize: 15,
+        data: showValue,
+        type: 'line',
+        itemStyle: {
+          color: '#5a5a5a'
+        },
+        symbol: 'circle',
+        markLine: {
+          symbol: ['none', 'none'],
+          silent: true,
+          data: [{
+            type: 'average'
+          }],
+          label: {show: false},
+          lineStyle: {color: '#d6d6d6'}
+        }
+      }]
+    };
+  }
+
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
@@ -79,9 +142,6 @@ export default class Statistics extends Vue {
       return title;
     }
   }
-
-  type = '-';
-  recordTypeList = recordTypeList;
 }
 </script>
 
